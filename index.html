@@ -211,14 +211,24 @@
       "Ok perfecto 😤💖<br/>Ahora dime: ¿pizza, sushi o Chick-fil-A? 😂"
     ];
 
-    yesBtn.addEventListener("click", () => {
-  document.getElementById("music").play();
-      msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
-      result.style.display = "block";
-      noBtn.disabled = true;
-      noBtn.style.opacity = 0.5;
-      burstHearts();
-    });
+    yesBtn.addEventListener("click", async () => {
+  const music = document.getElementById("music");
+
+  try {
+    music.volume = 1;
+    music.currentTime = 0;
+    await music.play();
+  } catch (error) {
+    music.setAttribute("controls", "controls");
+    alert("Tap play on the music once mi amor 🇩🇴💗");
+  }
+
+  msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
+  result.style.display = "block";
+  noBtn.disabled = true;
+  noBtn.style.opacity = 0.5;
+  burstHearts();
+});
 
     // Make the "No" button dodge
     function moveNoButton(){
@@ -260,7 +270,7 @@
       }
     }
   </script>
-  <audio id="music" loop>
+  <audio id="music" loop style="display:none;">
   <source src="https://cdn.pixabay.com/download/audio/2023/07/31/audio_5c8c6e6c9c.mp3?filename=bachata-romantic-145680.mp3" type="audio/mpeg">
 </audio>
 </body>
