@@ -212,6 +212,7 @@
     ];
 
     yesBtn.addEventListener("click", () => {
+  document.getElementById("music").play();
       msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
       result.style.display = "block";
       noBtn.disabled = true;
@@ -259,5 +260,8 @@
       }
     }
   </script>
+  <audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/07/31/audio_5c8c6e6c9c.mp3?filename=bachata-romantic-145680.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>
