@@ -1,279 +1,227 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hailey 💘 ¿Quieres ser mi San Valentín?</title>
-  <style>
-    :root{
-      --bg1:#ffd6e7;
-      --bg2:#ff7aa8;
-      --card:#ffffffcc;
-      --text:#1f1f1f;
-      --yes:#ff2d6c;
-      --no:#222;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
-      overflow:hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* floating hearts */
-    .hearts{ position:fixed; inset:0; pointer-events:none; opacity:.7; }
-    .heart{
-      position:absolute;
-      font-size:18px;
-      animation: floatUp linear infinite;
-      transform: translateY(110vh);
-      opacity:0;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.12));
-    }
-    @keyframes floatUp{
-      0%{ transform:translateY(110vh) translateX(0) rotate(0deg); opacity:0;}
-      10%{opacity:.95;}
-      100%{ transform:translateY(-20vh) translateX(70px) rotate(25deg); opacity:0;}
-    }
+<title>Hailey 💘 ¿Quieres ser mi San Valentín?</title>
 
-    .card{
-      width:min(560px, 92vw);
-      padding:28px 22px;
-      border-radius:22px;
-      background:var(--card);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 18px 55px rgba(0,0,0,.18);
-      text-align:center;
-      position:relative;
-    }
-    .emoji{
-      font-size:clamp(52px, 10vw, 70px);
-      margin:10px 0 6px;
-      display:inline-block;
-      animation: pop 1.2s ease-in-out infinite;
-    }
-    @keyframes pop{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+<style>
 
-    h1{
-      margin:0 0 8px;
-      font-size:clamp(22px, 5.2vw, 36px);
-      letter-spacing:-.4px;
-    }
-    p{
-      margin:0 0 16px;
-      font-size:clamp(14px, 3.8vw, 16px);
-      opacity:.92;
-      line-height:1.35;
-    }
-    .name{
-      font-weight:900;
-      background:#ffffff;
-      padding:2px 10px;
-      border-radius:999px;
-      display:inline-block;
-      box-shadow: inset 0 0 0 2px #0000000a;
-    }
-
-    .buttons{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:10px;
-  position:relative;
-  min-height:120px;
-}
-    button{
-      border:none;
-      padding:14px 20px;
-      border-radius:14px;
-      font-weight:800;
-      font-size:16px;
-      cursor:pointer;
-      transition: transform .08s ease, box-shadow .2s ease;
-      box-shadow: 0 10px 20px rgba(0,0,0,.12);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    button:active{ transform: scale(.98); }
-
-    #yesBtn{
-  background:var(--yes);
-  color:white;
-  position: relative;
-  z-index: 10;
-
-    }#noBtn{
-  background:#fff;
-  color:var(--no);
-  border:2px solid #00000014;
-  position:absolute;
-  left:65%;
-  top:0;
-  z-index:1;
+:root{
+--bg1:#ffd6e7;
+--bg2:#ff7aa8;
+--card:#ffffffcc;
+--yes:#ff2d6c;
+--no:#222;
 }
 
-    .result{
-      margin-top:18px;
-      padding:14px 14px;
-      border-radius:16px;
-      background:#fff;
-      display:none;
-      box-shadow: inset 0 0 0 2px #0000000a;
-    }
-    .result h2{
-      margin:0 0 6px;
-      font-size:22px;
-    }
-    .result .small{
-      margin:0;
-      opacity:.92;
-      line-height:1.35;
-    }
-    .footer{
-      margin-top:12px;
-      font-size:12px;
-      opacity:.75;
-    }
-    .tag{
-      display:inline-block;
-      margin-top:8px;
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:#ffffff;
-      box-shadow: inset 0 0 0 2px #0000000a;
-      opacity:.85;
-    }
-  </style>
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial;
+background:radial-gradient(circle at top, var(--bg1), var(--bg2));
+overflow:hidden;
+}
+
+.card{
+background:var(--card);
+padding:28px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 20px 50px rgba(0,0,0,.15);
+position:relative;
+}
+
+h1{
+margin:10px 0;
+}
+
+.name{
+font-weight:900;
+background:#fff;
+padding:4px 10px;
+border-radius:999px;
+}
+
+.buttons{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:20px;
+position:relative;
+height:60px;
+}
+
+button{
+border:none;
+padding:14px 22px;
+border-radius:14px;
+font-weight:700;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 10px 20px rgba(0,0,0,.12);
+transition:.2s;
+}
+
+button:active{
+transform:scale(.95);
+}
+
+#yesBtn{
+background:var(--yes);
+color:white;
+position:relative;
+z-index:9999;
+}
+
+#noBtn{
+background:#fff;
+color:var(--no);
+position:absolute;
+left:65%;
+top:0;
+z-index:1;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+border-radius:15px;
+background:white;
+display:none;
+}
+
+.hearts{
+position:fixed;
+inset:0;
+pointer-events:none;
+}
+
+.heart{
+position:absolute;
+animation:float 5s linear forwards;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+opacity:1;
+}
+100%{
+transform:translateY(-100vh);
+opacity:0;
+}
+}
+
+</style>
 </head>
+
 <body>
-  <div class="hearts" id="hearts"></div>
 
-  <main class="card" id="card">
-    <div class="emoji">💘</div>
-    <h1><span class="name">Hailey</span>, ¿quieres ser mi San Valentín?</h1>
-    <p>
-      Dímelo claro 😌💗<br/>
-      (pero tú sabe’ que yo ya tengo mi respuesta 😂)
-    </p>
+<div class="hearts" id="hearts"></div>
 
-    <div class="buttons" id="btnArea">
-      <button id="yesBtn">Sí 💗</button>
-      <button id="noBtn">No 🙄</button>
-    </div>
+<div class="card">
 
-    <div class="tag">🇩🇴 con cariño y un chin de atrevido 😭💘</div>
+<h1>
+💘<br>
+<span class="name">Hailey</span>, ¿quieres ser mi San Valentín?
+</h1>
 
-    <section class="result" id="result">
-      <h2>AYYYYY SÍÍÍ 💞</h2>
-      <p class="small" id="msg">
-        Hailey, ya tú ere’ mía en San Valentín 😌💐<br/>
-        Te voy a buscar y vamo’ a pasarla lindo. ¿A qué hora te paso a buscar? 👀
-      </p>
-      <div class="footer">Tírame un screenshot y mándamelo 💌</div>
-    </section>
-  </main>
+<p>Dímelo claro 😌💗</p>
 
-  <script>
-    // Floating hearts background
-    const heartsWrap = document.getElementById("hearts");
-    const heartEmojis = ["💗","💖","💘","💕","💞","❤️"];
-    for (let i = 0; i < 28; i++){
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
-      const left = Math.random()*100;
-      const dur = 6 + Math.random()*8;
-      const delay = Math.random()*6;
-      const size = 14 + Math.random()*22;
-      h.style.left = left + "vw";
-      h.style.animationDuration = dur + "s";
-      h.style.animationDelay = delay + "s";
-      h.style.fontSize = size + "px";
-      heartsWrap.appendChild(h);
-    }
+<div class="buttons">
 
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const result = document.getElementById("result");
-    const msg = document.getElementById("msg");
-    const btnArea = document.getElementById("btnArea");
+<button id="yesBtn">Sí 💗</button>
 
-    const yesMessages = [
-      "Hailey, ya tú ere’ mi San Valentín 😌💐<br/>Te paso a buscar y vamo’ a comer rico. ¿A qué hora tú ta’ libre? 👀",
-      "Diacheee 😭💞 sabía que tú iba’ a decir que sí.<br/>Este San Valentín es de nosotro’ 💘",
-      "Ta’ duro… ya tú me tiene’ en la mano 😌💗<br/>¿Flores o chocolatito? 👀🍫",
-      "Ok perfecto 😤💖<br/>Ahora dime: ¿pizza, sushi o Chick-fil-A? 😂"
-    ];
+<button id="noBtn">No 🙄</button>
 
-    yesBtn.addEventListener("click", async () => {
-  const music = document.getElementById("music");
+</div>
 
-  try {
-    music.volume = 1;
-    music.currentTime = 0;
-    await music.play();
-  } catch (error) {
-    music.setAttribute("controls", "controls");
-    alert("Tap play on the music once mi amor 🇩🇴💗");
-  }
+<div class="result" id="result">
+<h2 id="msg"></h2>
+</div>
 
-  msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
-  result.style.display = "block";
-  noBtn.disabled = true;
-  noBtn.style.opacity = 0.5;
-  burstHearts();
-});
+</div>
 
-    // Make the "No" button dodge
-    function moveNoButton(){
-      const area = btnArea.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-
-      const maxX = area.width - btnRect.width - 8;
-      const maxY = area.height - btnRect.height - 8;
-
-      const x = Math.max(6, Math.random() * maxX);
-      const y = Math.max(0, Math.random() * maxY);
-
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-      noBtn.style.transform = "none";
-    }
-
-    // Desktop hover
-    noBtn.addEventListener("mouseenter", moveNoButton);
-
-    // Mobile tap dodge
-    noBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      moveNoButton();
-    }, {passive:false});
-
-    // Extra heart burst on Yes
-    function burstHearts(){
-      for (let i=0;i<14;i++){
-        const s = document.createElement("div");
-        s.className = "heart";
-        s.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
-        s.style.left = (45 + (Math.random()*12 - 6)) + "vw";
-        s.style.animationDuration = (3 + Math.random()*2) + "s";
-        s.style.animationDelay = "0s";
-        s.style.fontSize = (18 + Math.random()*22) + "px";
-        heartsWrap.appendChild(s);
-        setTimeout(()=>s.remove(), 5200);
-      }
-    }
-  </script>
-  <audio id="music" loop preload="auto" style="display:none">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8a1a0e8b1.mp3" type="audio/mpeg">
+<audio id="music" preload="auto" style="display:none;">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
 </audio>
+
+<script>
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const result=document.getElementById("result");
+const msg=document.getElementById("msg");
+const music=document.getElementById("music");
+const hearts=document.getElementById("hearts");
+
+const messages=[
+"Sabía que dirías que sí 😌💗",
+"Este San Valentín es de nosotros 💘",
+"Te paso a buscar 😏",
+"Flores o chocolate? 👀",
+"Ahora pizza, sushi o Chick-fil-A? 😄"
+];
+
+yesBtn.onclick=async()=>{
+
+try{
+music.volume=1;
+music.currentTime=0;
+await music.play();
+}catch{}
+
+msg.innerHTML=messages[Math.floor(Math.random()*messages.length)];
+
+result.style.display="block";
+
+burstHearts();
+
+};
+
+function moveNo(){
+
+const x=Math.random()*200-100;
+const y=Math.random()*80;
+
+noBtn.style.transform=`translate(${x}px,${y}px)`;
+
+}
+
+noBtn.onmouseover=moveNo;
+noBtn.ontouchstart=moveNo;
+
+function burstHearts(){
+
+for(let i=0;i<20;i++){
+
+const h=document.createElement("div");
+
+h.className="heart";
+h.innerHTML="💗";
+
+h.style.left=Math.random()*100+"vw";
+h.style.bottom="0";
+h.style.fontSize=(20+Math.random()*20)+"px";
+
+hearts.appendChild(h);
+
+setTimeout(()=>h.remove(),5000);
+
+}
+
+}
+
+</script>
+
 </body>
 </html>
