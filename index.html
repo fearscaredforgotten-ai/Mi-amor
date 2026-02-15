@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hailey 💘 ¿Quieres ser mi San Valentín?</title>
+
   <style>
     :root{
       --bg1:#ffe2ef;
@@ -28,7 +29,7 @@
     }
 
     /* floating hearts */
-    .hearts{ position:fixed; inset:0; pointer-events:none; opacity:.75; z-index:1; }
+    .hearts{ position:fixed; inset:0; pointer-events:none; opacity:.78; z-index:1; }
     .heart{
       position:absolute;
       opacity:0;
@@ -56,8 +57,8 @@
     .top{
       font-size:56px;
       margin:0 0 6px;
-      animation: pop 1.2s ease-in-out infinite;
       display:inline-block;
+      animation: pop 1.2s ease-in-out infinite;
     }
     @keyframes pop{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 
@@ -94,7 +95,7 @@
       opacity:.85;
     }
 
-    /* Buttons area: YES always clickable, NO stays on right half */
+    /* Buttons: YES always clickable; NO can NEVER overlap YES */
     .buttons{
       margin-top:18px;
       position:relative;
@@ -108,7 +109,7 @@
       flex-wrap:wrap;
       align-items:center;
       position:relative;
-      z-index:3;
+      z-index:10;
     }
     button{
       border:none;
@@ -129,18 +130,18 @@
       background:var(--yes);
       color:#fff;
       position:relative;
-      z-index:9999;
+      z-index:9999;   /* Guaranteed tap priority */
       pointer-events:auto;
     }
 
-    /* NO button is absolute but restricted to right half visually and logically */
+    /* NO button lives ONLY on the right side and moves around there */
     #noBtn{
       background:#fff;
       color:var(--no);
       border:2px solid rgba(0,0,0,.08);
       position:absolute;
       top:18px;
-      left:62%;
+      left:68%;
       z-index:2;
     }
 
@@ -155,7 +156,7 @@
     }
     .result h2{ margin:0 0 6px; font-size:18px; }
     #msg{ line-height:1.35; }
-    .footer{ margin-top:10px; font-size:13px; opacity:.8; }
+    .footer{ margin-top:10px; font-size:13px; opacity:.82; }
   </style>
 </head>
 
@@ -199,7 +200,6 @@
     }
     setInterval(spawnHeart, 240);
 
-    // Elements
     const yesBtn  = document.getElementById("yesBtn");
     const noBtn   = document.getElementById("noBtn");
     const btnArea = document.getElementById("btnArea");
@@ -213,115 +213,27 @@
       "Ok perfecto 😤💖<br>Ahora dime: ¿pizza, sushi o Chick-fil-A? 😂"
     ];
 
-    // Keep NO button from ever blocking YES: restrict NO to right half of container
+    // Keep NO confined to the right half so it can’t block YES
     function moveNoButton(){
       const area = btnArea.getBoundingClientRect();
       const rect = noBtn.getBoundingClientRect();
 
-      const rightHalfStart = area.width * 0.55; // start of allowed x range
+      const rightStart = area.width * 0.58;
       const maxX = area.width - rect.width - 8;
       const maxY = area.height - rect.height - 8;
 
-      const x = Math.max(rightHalfStart, Math.random() * maxX);
-      const y = Math.max(10, Math.random() * maxY);
+      const x = Math.max(rightStart, Math.random() * maxX);
+      const y = Math.max(12, Math.random() * maxY);
 
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
     }
 
-    // Dodge on desktop + mobile
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
       moveNoButton();
     }, { passive:false });
-
-    // -------- Dominican-style beat (Web Audio) --------
-    let audioCtx = null;
-    let beatTimer = null;
-    let beatStep = 0;
-
-    function startDominicanBeat(){
-      if (beatTimer) return; // already playing
-
-      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-
-      const master = audioCtx.createGain();
-      master.gain.value = 0.35;
-      master.connect(audioCtx.destination);
-
-      // small helper: click (hi-hat)
-      function hat(time){
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "square";
-        osc.frequency.setValueAtTime(8500, time);
-        gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.12, time + 0.001);
-        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.03);
-        osc.connect(gain).connect(master);
-        osc.start(time);
-        osc.stop(time + 0.04);
-      }
-
-      // kick
-      function kick(time){
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(140, time);
-        osc.frequency.exponentialRampToValueAtTime(55, time + 0.08);
-        gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.9, time + 0.005);
-        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
-        osc.connect(gain).connect(master);
-        osc.start(time);
-        osc.stop(time + 0.14);
-      }
-
-      // snare-ish (noise)
-      function snare(time){
-        const bufferSize = audioCtx.sampleRate * 0.12;
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-
-        const noise = audioCtx.createBufferSource();
-        noise.buffer = buffer;
-
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = "highpass";
-        filter.frequency.setValueAtTime(1200, time);
-
-        const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.0001, time);
-        gain.gain.exponentialRampToValueAtTime(0.45, time + 0.003);
-        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
-
-        noise.connect(filter).connect(gain).connect(master);
-        noise.start(time);
-        noise.stop(time + 0.13);
-      }
-
-      // tempo (merengue-ish feel)
-      const bpm = 138;
-      const stepMs = (60_000 / bpm) / 2; // 8th notes
-
-      beatStep = 0;
-      beatTimer = setInterval(() => {
-        const t = audioCtx.currentTime + 0.02;
-
-        // Pattern: kick on 1, “and”, snare on 2 & 4 vibe, hats constant
-        hat(t);
-
-        if (beatStep % 8 === 0) kick(t);        // strong
-        if (beatStep % 8 === 4) snare(t);       // backbeat
-        if (beatStep % 8 === 2) kick(t);        // syncopation
-        if (beatStep % 8 === 6) snare(t);       // extra energy
-
-        beatStep = (beatStep + 1) % 16;
-      }, stepMs);
-    }
 
     function burstHearts(){
       for(let i=0;i<14;i++){
@@ -337,24 +249,20 @@
       }
     }
 
-    yesBtn.addEventListener("click", async () => {
-      // Show result
+    // Romeo Santos (Official Video) — opens on YES with autoplay
+    // NOTE: YouTube will autoplay in the new tab on most devices after a user tap.
+    const romeoUrl = "https://www.youtube.com/watch?v=QFs3PIZb3js&autoplay=1"; // Official video
+    // Source:  [oai_citation:0‡YouTube](https://www.youtube.com/watch?v=QFs3PIZb3js&utm_source=chatgpt.com)
+
+    yesBtn.addEventListener("click", () => {
       msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
       result.style.display = "block";
-
-      // Lock NO
       noBtn.disabled = true;
       noBtn.style.opacity = 0.45;
-
       burstHearts();
 
-      // Start beat ONLY after YES (works on iPhone)
-      try{
-        if (audioCtx) await audioCtx.resume();
-        startDominicanBeat();
-      }catch(e){
-        // If silent mode/volume blocks, nothing else needed
-      }
+      // Open Romeo Santos only after she says YES
+      window.open(romeoUrl, "_blank", "noopener,noreferrer");
     });
   </script>
 </body>
