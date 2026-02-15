@@ -1,227 +1,361 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hailey 💘 ¿Quieres ser mi San Valentín?</title>
+  <style>
+    :root{
+      --bg1:#ffe2ef;
+      --bg2:#ff7aa8;
+      --card:#ffffffd6;
+      --text:#1f1f1f;
+      --yes:#ff2d6c;
+      --no:#222;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+      overflow:hidden;
+      padding:20px;
+    }
 
-<title>Hailey 💘 ¿Quieres ser mi San Valentín?</title>
+    /* floating hearts */
+    .hearts{ position:fixed; inset:0; pointer-events:none; opacity:.75; z-index:1; }
+    .heart{
+      position:absolute;
+      opacity:0;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.12));
+    }
+    @keyframes floatUp{
+      0%{ transform:translateY(110vh) scale(.9); opacity:0; }
+      10%{ opacity:1; }
+      100%{ transform:translateY(-20vh) scale(1.2); opacity:0; }
+    }
 
-<style>
+    .card{
+      width:min(650px, 92vw);
+      background:var(--card);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:22px;
+      padding:26px 22px;
+      text-align:center;
+      box-shadow: 0 18px 50px rgba(0,0,0,.14);
+      backdrop-filter: blur(10px);
+      position:relative;
+      z-index:5;
+    }
+    .top{
+      font-size:56px;
+      margin:0 0 6px;
+      animation: pop 1.2s ease-in-out infinite;
+      display:inline-block;
+    }
+    @keyframes pop{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 
-:root{
---bg1:#ffd6e7;
---bg2:#ff7aa8;
---card:#ffffffcc;
---yes:#ff2d6c;
---no:#222;
-}
+    h1{
+      margin:0 0 8px;
+      font-size: clamp(26px, 4.2vw, 40px);
+      line-height:1.1;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+    .name{
+      display:inline-block;
+      background:#fff;
+      padding:2px 10px;
+      border-radius:999px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06);
+      margin-right:6px;
+      font-weight:900;
+    }
+    .sub{
+      margin:0;
+      opacity:.9;
+      font-size:16px;
+      line-height:1.4;
+    }
+    .tag{
+      display:inline-block;
+      margin-top:10px;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#fff;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06);
+      opacity:.85;
+    }
 
-*{
-box-sizing:border-box;
-}
+    /* Buttons area: YES always clickable, NO stays on right half */
+    .buttons{
+      margin-top:18px;
+      position:relative;
+      min-height:140px;
+      padding:10px 6px;
+    }
+    .row{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      position:relative;
+      z-index:3;
+    }
+    button{
+      border:none;
+      padding:14px 22px;
+      border-radius:14px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .08s ease, box-shadow .2s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    button:active{ transform: scale(.98); }
 
-body{
-margin:0;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial;
-background:radial-gradient(circle at top, var(--bg1), var(--bg2));
-overflow:hidden;
-}
+    #yesBtn{
+      background:var(--yes);
+      color:#fff;
+      position:relative;
+      z-index:9999;
+      pointer-events:auto;
+    }
 
-.card{
-background:var(--card);
-padding:28px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 20px 50px rgba(0,0,0,.15);
-position:relative;
-}
+    /* NO button is absolute but restricted to right half visually and logically */
+    #noBtn{
+      background:#fff;
+      color:var(--no);
+      border:2px solid rgba(0,0,0,.08);
+      position:absolute;
+      top:18px;
+      left:62%;
+      z-index:2;
+    }
 
-h1{
-margin:10px 0;
-}
-
-.name{
-font-weight:900;
-background:#fff;
-padding:4px 10px;
-border-radius:999px;
-}
-
-.buttons{
-display:flex;
-justify-content:center;
-gap:12px;
-margin-top:20px;
-position:relative;
-height:60px;
-}
-
-button{
-border:none;
-padding:14px 22px;
-border-radius:14px;
-font-weight:700;
-font-size:16px;
-cursor:pointer;
-box-shadow:0 10px 20px rgba(0,0,0,.12);
-transition:.2s;
-}
-
-button:active{
-transform:scale(.95);
-}
-
-#yesBtn{
-background:var(--yes);
-color:white;
-position:relative;
-z-index:9999;
-}
-
-#noBtn{
-background:#fff;
-color:var(--no);
-position:absolute;
-left:65%;
-top:0;
-z-index:1;
-}
-
-.result{
-margin-top:20px;
-padding:15px;
-border-radius:15px;
-background:white;
-display:none;
-}
-
-.hearts{
-position:fixed;
-inset:0;
-pointer-events:none;
-}
-
-.heart{
-position:absolute;
-animation:float 5s linear forwards;
-}
-
-@keyframes float{
-0%{
-transform:translateY(0);
-opacity:1;
-}
-100%{
-transform:translateY(-100vh);
-opacity:0;
-}
-}
-
-</style>
+    .result{
+      display:none;
+      margin-top:16px;
+      padding:14px 14px;
+      background:#fff;
+      border-radius:16px;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.06);
+      text-align:left;
+    }
+    .result h2{ margin:0 0 6px; font-size:18px; }
+    #msg{ line-height:1.35; }
+    .footer{ margin-top:10px; font-size:13px; opacity:.8; }
+  </style>
 </head>
 
 <body>
+  <div class="hearts" id="hearts"></div>
 
-<div class="hearts" id="hearts"></div>
+  <main class="card">
+    <div class="top">💘</div>
+    <h1><span class="name">Hailey</span>¿quieres ser mi San Valentín?</h1>
+    <p class="sub">Dímelo claro 😌💗<br>(pero tú sabe’ que yo ya tengo mi respuesta 😂)</p>
+    <div class="tag">🇩🇴 con cariño y un chin de atrevido 😭💞</div>
 
-<div class="card">
+    <div class="buttons" id="btnArea">
+      <div class="row">
+        <button id="yesBtn" type="button">Sí 💗</button>
+      </div>
+      <button id="noBtn" type="button">No 🙄</button>
+    </div>
 
-<h1>
-💘<br>
-<span class="name">Hailey</span>, ¿quieres ser mi San Valentín?
-</h1>
+    <section class="result" id="result">
+      <h2>AYYYYY SÍÍÍ 💞</h2>
+      <div id="msg"></div>
+      <div class="footer">Tírame un screenshot y mándamelo 💌</div>
+    </section>
+  </main>
 
-<p>Dímelo claro 😌💗</p>
+  <script>
+    // Hearts background
+    const heartsWrap = document.getElementById("hearts");
+    const heartEmojis = ["💗","💖","💘","💕","💞","❤️"];
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+      h.style.left = Math.random()*100 + "vw";
+      h.style.animationDuration = (4 + Math.random()*5) + "s";
+      h.style.animationDelay = (Math.random()*1) + "s";
+      h.style.fontSize = (14 + Math.random()*22) + "px";
+      heartsWrap.appendChild(h);
+      setTimeout(()=>h.remove(), 9000);
+    }
+    setInterval(spawnHeart, 240);
 
-<div class="buttons">
+    // Elements
+    const yesBtn  = document.getElementById("yesBtn");
+    const noBtn   = document.getElementById("noBtn");
+    const btnArea = document.getElementById("btnArea");
+    const result  = document.getElementById("result");
+    const msg     = document.getElementById("msg");
 
-<button id="yesBtn">Sí 💗</button>
+    const yesMessages = [
+      "Hailey, ya tú ere’ mi San Valentín 😌💗<br>Te paso a buscar y vamo’ a comer rico. ¿A qué hora tú ta’? 👀✨",
+      "Diacheee 😭💞 sabía que tú iba’ a decir que sí.<br>Este San Valentín es de nosotro’ 💘",
+      "Ta’ duro… ya tú me tiene’ en la mano 😌💗<br>¿Flores o chocolatito? 👀🍫",
+      "Ok perfecto 😤💖<br>Ahora dime: ¿pizza, sushi o Chick-fil-A? 😂"
+    ];
 
-<button id="noBtn">No 🙄</button>
+    // Keep NO button from ever blocking YES: restrict NO to right half of container
+    function moveNoButton(){
+      const area = btnArea.getBoundingClientRect();
+      const rect = noBtn.getBoundingClientRect();
 
-</div>
+      const rightHalfStart = area.width * 0.55; // start of allowed x range
+      const maxX = area.width - rect.width - 8;
+      const maxY = area.height - rect.height - 8;
 
-<div class="result" id="result">
-<h2 id="msg"></h2>
-</div>
+      const x = Math.max(rightHalfStart, Math.random() * maxX);
+      const y = Math.max(10, Math.random() * maxY);
 
-</div>
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+    }
 
-<audio id="music" preload="auto" style="display:none;">
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3">
-</audio>
+    // Dodge on desktop + mobile
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive:false });
 
-<script>
+    // -------- Dominican-style beat (Web Audio) --------
+    let audioCtx = null;
+    let beatTimer = null;
+    let beatStep = 0;
 
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const result=document.getElementById("result");
-const msg=document.getElementById("msg");
-const music=document.getElementById("music");
-const hearts=document.getElementById("hearts");
+    function startDominicanBeat(){
+      if (beatTimer) return; // already playing
 
-const messages=[
-"Sabía que dirías que sí 😌💗",
-"Este San Valentín es de nosotros 💘",
-"Te paso a buscar 😏",
-"Flores o chocolate? 👀",
-"Ahora pizza, sushi o Chick-fil-A? 😄"
-];
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
 
-yesBtn.onclick=async()=>{
+      const master = audioCtx.createGain();
+      master.gain.value = 0.35;
+      master.connect(audioCtx.destination);
 
-try{
-music.volume=1;
-music.currentTime=0;
-await music.play();
-}catch{}
+      // small helper: click (hi-hat)
+      function hat(time){
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "square";
+        osc.frequency.setValueAtTime(8500, time);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(0.12, time + 0.001);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.03);
+        osc.connect(gain).connect(master);
+        osc.start(time);
+        osc.stop(time + 0.04);
+      }
 
-msg.innerHTML=messages[Math.floor(Math.random()*messages.length)];
+      // kick
+      function kick(time){
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(140, time);
+        osc.frequency.exponentialRampToValueAtTime(55, time + 0.08);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(0.9, time + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+        osc.connect(gain).connect(master);
+        osc.start(time);
+        osc.stop(time + 0.14);
+      }
 
-result.style.display="block";
+      // snare-ish (noise)
+      function snare(time){
+        const bufferSize = audioCtx.sampleRate * 0.12;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
 
-burstHearts();
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
 
-};
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "highpass";
+        filter.frequency.setValueAtTime(1200, time);
 
-function moveNo(){
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(0.45, time + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
 
-const x=Math.random()*200-100;
-const y=Math.random()*80;
+        noise.connect(filter).connect(gain).connect(master);
+        noise.start(time);
+        noise.stop(time + 0.13);
+      }
 
-noBtn.style.transform=`translate(${x}px,${y}px)`;
+      // tempo (merengue-ish feel)
+      const bpm = 138;
+      const stepMs = (60_000 / bpm) / 2; // 8th notes
 
-}
+      beatStep = 0;
+      beatTimer = setInterval(() => {
+        const t = audioCtx.currentTime + 0.02;
 
-noBtn.onmouseover=moveNo;
-noBtn.ontouchstart=moveNo;
+        // Pattern: kick on 1, “and”, snare on 2 & 4 vibe, hats constant
+        hat(t);
 
-function burstHearts(){
+        if (beatStep % 8 === 0) kick(t);        // strong
+        if (beatStep % 8 === 4) snare(t);       // backbeat
+        if (beatStep % 8 === 2) kick(t);        // syncopation
+        if (beatStep % 8 === 6) snare(t);       // extra energy
 
-for(let i=0;i<20;i++){
+        beatStep = (beatStep + 1) % 16;
+      }, stepMs);
+    }
 
-const h=document.createElement("div");
+    function burstHearts(){
+      for(let i=0;i<14;i++){
+        const s = document.createElement("div");
+        s.className = "heart";
+        s.textContent = heartEmojis[Math.floor(Math.random()*heartEmojis.length)];
+        s.style.left = (45 + (Math.random()*12 - 6)) + "vw";
+        s.style.animationDuration = (2.3 + Math.random()*1.8) + "s";
+        s.style.animationDelay = "0s";
+        s.style.fontSize = (18 + Math.random()*22) + "px";
+        heartsWrap.appendChild(s);
+        setTimeout(()=>s.remove(), 5200);
+      }
+    }
 
-h.className="heart";
-h.innerHTML="💗";
+    yesBtn.addEventListener("click", async () => {
+      // Show result
+      msg.innerHTML = yesMessages[Math.floor(Math.random()*yesMessages.length)];
+      result.style.display = "block";
 
-h.style.left=Math.random()*100+"vw";
-h.style.bottom="0";
-h.style.fontSize=(20+Math.random()*20)+"px";
+      // Lock NO
+      noBtn.disabled = true;
+      noBtn.style.opacity = 0.45;
 
-hearts.appendChild(h);
+      burstHearts();
 
-setTimeout(()=>h.remove(),5000);
-
-}
-
-}
-
-</script>
-
+      // Start beat ONLY after YES (works on iPhone)
+      try{
+        if (audioCtx) await audioCtx.resume();
+        startDominicanBeat();
+      }catch(e){
+        // If silent mode/volume blocks, nothing else needed
+      }
+    });
+  </script>
 </body>
 </html>
